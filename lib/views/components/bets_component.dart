@@ -33,18 +33,34 @@ class _BetsComponentState extends State<BetsComponent> {
     return Consumer<GameViewModel>(
       builder: (context, viewModel, child) => Column(
         children: [
-          const Text("Place your bets", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text("Place your bets",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Round n°${viewModel.activeRound!.roundNumber}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  !viewModel.goingDown && viewModel.activeRound!.handSize > 2
+                      ? IconButton(
+                          onPressed: () => viewModel.goDownInstead(),
+                          icon: const Icon(Icons.arrow_circle_down),
+                        )
+                      : IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.check_circle_outline),
+                        ),
+                  Text(
+                    "Round n°${viewModel.activeRound!.roundNumber}",
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               Text(
-                "Hand size: ${viewModel.activeRound!.handSize}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                "Hand size: ${viewModel.activeRound!.handSize} ${viewModel.goingDown ? "↓" : "↑"}",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -60,9 +76,14 @@ class _BetsComponentState extends State<BetsComponent> {
                     Expanded(
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        initialValue: viewModel.activeRound!.bets[player]?.toString() ?? "0",
-                        onChanged: (value) => setState(() => bets[player] = int.parse(value)),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        initialValue:
+                            viewModel.activeRound!.bets[player]?.toString() ??
+                                "0",
+                        onChanged: (value) =>
+                            setState(() => bets[player] = int.parse(value)),
                       ),
                     ),
                   ],
@@ -74,22 +95,28 @@ class _BetsComponentState extends State<BetsComponent> {
           const SizedBox(height: 16),
           Text(
             "Sum of all bets: $sum",
-            style: TextStyle(color: sum == viewModel.activeRound!.handSize ? Colors.red : Colors.black),
+            style: TextStyle(
+                color: sum == viewModel.activeRound!.handSize
+                    ? Colors.red
+                    : Colors.black),
           ),
           const SizedBox(height: 8),
-          ElevatedButton(
-            onPressed: () {
-              if (sum == viewModel.activeRound!.handSize) {
-                showDialog(
-                  context: context,
-                  builder: (context) =>
-                      const ErrorDialog(message: "The sum of all bets can't be equal to the hand size."),
-                );
-              } else {
-                viewModel.saveBets(bets);
-              }
-            },
-            child: const Text("Confirm bets"),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                if (sum == viewModel.activeRound!.handSize) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const ErrorDialog(
+                        message:
+                            "The sum of all bets can't be equal to the hand size."),
+                  );
+                } else {
+                  viewModel.saveBets(bets);
+                }
+              },
+              child: const Text("Confirm bets"),
+            ),
           ),
           if (!kIsWeb && Platform.isIOS) const SizedBox(height: 16),
         ],

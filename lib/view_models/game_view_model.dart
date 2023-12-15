@@ -127,6 +127,16 @@ class GameViewModel extends ChangeNotifier {
     step = Steps.bet;
     notifyListeners();
   }
+
+  void goDownInstead() {
+    goingDown = true;
+    activeRound = Round(
+        roundNumber: activeRound!.roundNumber,
+        handSize: activeRound!.handSize - 2,
+        firstPlayerIndex: activeRound!.firstPlayerIndex,
+    );
+    notifyListeners();
+  }
 }
 
 class Pair<A, B> {

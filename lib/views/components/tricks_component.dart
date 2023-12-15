@@ -38,9 +38,17 @@ class _TricksComponentState extends State<TricksComponent> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Round n°${viewModel.activeRound!.roundNumber}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => viewModel.changeBets(),
+                    icon: const Icon(Icons.arrow_circle_left_outlined),
+                  ),
+                  Text(
+                    "Round n°${viewModel.activeRound!.roundNumber}",
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               Text(
                 "Hand size: ${viewModel.activeRound!.handSize}",
@@ -74,47 +82,22 @@ class _TricksComponentState extends State<TricksComponent> {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () => viewModel.changeBets(),
-                icon: const Icon(Icons.arrow_circle_left_outlined),
-              ),
-              IconButton(
-                onPressed: () {
-                  if (sum != viewModel.activeRound!.handSize) {
-                    showDialog(
-                      context: context,
-                      builder: (context) =>
-                          const ErrorDialog(message: "The total number of tricks must be equal to the hand size."),
-                    );
-                  } else {
-                    var done = viewModel.saveTricks(tricks);
-                    if (done) Navigator.pushReplacementNamed(context, "/result");
-                  }
-                },
-                icon: const Icon(Icons.check_circle_outline),
-              ),
-              viewModel.goingDown
-                  ? const Text("Going down!")
-                  : IconButton(
-                      onPressed: () {
-                        if (sum != viewModel.activeRound!.handSize) {
-                          showDialog(
-                            context: context,
-                            builder: (context) =>
-                                const ErrorDialog(message: "The total number of tricks must be equal to the hand size."),
-                          );
-                        } else {
-                          viewModel.goingDown = true;
-                          var done = viewModel.saveTricks(tricks);
-                          if (done) Navigator.pushReplacementNamed(context, "/result");
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_circle_down),
-                    ),
-            ],
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                if (sum != viewModel.activeRound!.handSize) {
+                  showDialog(
+                    context: context,
+                    builder: (context) =>
+                        const ErrorDialog(message: "The total number of tricks must be equal to the hand size."),
+                  );
+                } else {
+                  var done = viewModel.saveTricks(tricks);
+                  if (done) Navigator.pushReplacementNamed(context, "/result");
+                }
+              },
+              child: const Text("Confirm results"),
+            ),
           ),
           if (!kIsWeb && Platform.isIOS) const SizedBox(height: 16),
         ],
