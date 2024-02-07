@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
 
 class PointsDialog extends StatelessWidget {
-  const PointsDialog({Key? key}) : super(key: key);
+  const PointsDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

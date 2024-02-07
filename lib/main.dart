@@ -14,13 +14,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider<GameViewModel>(
       create: (context) => GameViewModel(),
       child: MaterialApp(
         title: 'Rikiki',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            brightness: Brightness.dark,
+            seedColor: Colors.blue,
+          ),
+          useMaterial3: true,
+        ),
         initialRoute: "/start",
         routes: {
           "/start": (context) => const StartScreen(),

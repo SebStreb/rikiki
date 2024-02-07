@@ -8,7 +8,8 @@ class Round {
   });
 
   Round.first({required startingPlayerIndex})
-      : this(roundNumber: 1, handSize: 1, firstPlayerIndex: startingPlayerIndex);
+      : this(
+            roundNumber: 1, handSize: 1, firstPlayerIndex: startingPlayerIndex);
 
   final int roundNumber;
   final int handSize;
@@ -21,6 +22,8 @@ class Round {
     var bet = bets[player] ?? 0;
     var trick = tricks[player] ?? 0;
     var diff = (trick - bet).abs();
-    return diff == 0 ? config.winningPoints + bet * config.trickValue : diff * -config.trickValue;
+    return diff == 0
+        ? config.winningPoints + bet * config.trickValue
+        : diff * -config.trickValue;
   }
 }

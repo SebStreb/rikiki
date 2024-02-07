@@ -8,7 +8,7 @@ import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
 import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
 
 class BetsComponent extends StatefulWidget {
-  const BetsComponent({Key? key}) : super(key: key);
+  const BetsComponent({super.key});
 
   @override
   State<BetsComponent> createState() => _BetsComponentState();
@@ -39,6 +39,19 @@ class _BetsComponentState extends State<BetsComponent> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                "Current hand size : ${viewModel.currentHandSize} "
+                "${viewModel.downAfter ? "↓" : "↑"}",
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              if (!viewModel.goingDown && viewModel.activeRound!.handSize > 2)
+                TextButton(
+                  onPressed: () => viewModel.goDownInstead(),
+                  child: const Text("Go down instead"),
+                )
+              else TextButton(onPressed: () {}, child: const Text(""),)
+              /*
               Row(
                 children: [
                   !viewModel.goingDown && viewModel.activeRound!.handSize > 2
@@ -62,6 +75,8 @@ class _BetsComponentState extends State<BetsComponent> {
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
+
+               */
             ],
           ),
           const SizedBox(height: 16),
@@ -98,7 +113,7 @@ class _BetsComponentState extends State<BetsComponent> {
             style: TextStyle(
                 color: sum == viewModel.activeRound!.handSize
                     ? Colors.red
-                    : Colors.black),
+                    : Theme.of(context).colorScheme.onBackground),
           ),
           const SizedBox(height: 8),
           Center(

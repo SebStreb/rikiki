@@ -6,13 +6,16 @@ import 'package:provider/provider.dart';
 import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({Key? key}) : super(key: key);
+  const ResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<GameViewModel>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(title: const Text("Rikiki Game Results")),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Rikiki Game Results"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
@@ -37,7 +40,8 @@ class ResultScreen extends StatelessWidget {
                   : "The winners are: ${viewModel.winners().reduce((player1, player2) => "$player1, $player2")}"),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, "/start"),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, "/start"),
                 child: const Text("Start a new game"),
               ),
               if (!kIsWeb && Platform.isIOS) const SizedBox(height: 16),

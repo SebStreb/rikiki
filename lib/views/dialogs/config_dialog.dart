@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
 
 class ConfigDialog extends StatefulWidget {
-  const ConfigDialog({Key? key}) : super(key: key);
+  const ConfigDialog({super.key});
 
   @override
   State<ConfigDialog> createState() => _ConfigDialogState();

@@ -8,7 +8,7 @@ import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
 import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
 
 class TricksComponent extends StatefulWidget {
-  const TricksComponent({Key? key}) : super(key: key);
+  const TricksComponent({super.key});
 
   @override
   State<TricksComponent> createState() => _TricksComponentState();
@@ -33,11 +33,24 @@ class _TricksComponentState extends State<TricksComponent> {
     return Consumer<GameViewModel>(
       builder: (context, viewModel, child) => Column(
         children: [
-          const Text("Enter your results", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text("Enter your results",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                "Current hand size : ${viewModel.currentHandSize} "
+                "${viewModel.downAfter ? "↓" : "↑"}",
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                onPressed: () => viewModel.changeBets(),
+                child: const Text("Change bets"),
+              )
+
+              /*
               Row(
                 children: [
                   IconButton(
@@ -54,6 +67,8 @@ class _TricksComponentState extends State<TricksComponent> {
                 "Hand size: ${viewModel.activeRound!.handSize}",
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
+
+               */
             ],
           ),
           const SizedBox(height: 16),
@@ -65,14 +80,19 @@ class _TricksComponentState extends State<TricksComponent> {
                 return Row(
                   children: [
                     Expanded(child: Text(player)),
-                    Expanded(child: Text("Bet: ${viewModel.activeRound!.bets[player]}")),
+                    Expanded(
+                        child: Text(
+                            "Bet: ${viewModel.activeRound!.bets[player]}")),
                     Expanded(
                       flex: 2,
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         initialValue: "0",
-                        onChanged: (value) => setState(() => tricks[player] = int.parse(value)),
+                        onChanged: (value) =>
+                            setState(() => tricks[player] = int.parse(value)),
                       ),
                     ),
                   ],
@@ -88,8 +108,9 @@ class _TricksComponentState extends State<TricksComponent> {
                 if (sum != viewModel.activeRound!.handSize) {
                   showDialog(
                     context: context,
-                    builder: (context) =>
-                        const ErrorDialog(message: "The total number of tricks must be equal to the hand size."),
+                    builder: (context) => const ErrorDialog(
+                        message:
+                            "The total number of tricks must be equal to the hand size."),
                   );
                 } else {
                   var done = viewModel.saveTricks(tricks);

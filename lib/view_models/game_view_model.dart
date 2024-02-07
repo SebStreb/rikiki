@@ -21,9 +21,17 @@ class GameViewModel extends ChangeNotifier {
 
   bool get isOver => activeRound == null;
 
+  int get currentHandSize => activeRound?.handSize ?? 0;
+
+  bool get downAfter {
+    if (goingDown) return true;
+    return currentHandSize == config.maximumHandSize(players.length);
+  }
+
   void start(List<String> players) {
     this.players = players;
-    activeRound = Round.first(startingPlayerIndex: Random().nextInt(players.length));
+    activeRound =
+        Round.first(startingPlayerIndex: Random().nextInt(players.length));
     goingDown = false;
     previousRounds.clear();
     step = Steps.bet;
@@ -49,7 +57,9 @@ class GameViewModel extends ChangeNotifier {
   List<String> get playersFromFirst {
     var list = <String>[];
 
-    for (var index = players.indexOf(firstPlayer!); index < players.length; index++) {
+    for (var index = players.indexOf(firstPlayer!);
+        index < players.length;
+        index++) {
       list.add(players[index]);
     }
     for (var index = 0; index < players.indexOf(firstPlayer!); index++) {
@@ -60,15 +70,22 @@ class GameViewModel extends ChangeNotifier {
   }
 
   List<Pair<String, int>> get playersByScore {
-    var scores = players.map((player) => Pair(player, points[player]!)).toList();
+    var scores =
+        players.map((player) => Pair(player, points[player]!)).toList();
     scores.sort((score1, score2) => score2.second - score1.second);
     return scores;
   }
 
   Map<String, int> get points => previousRounds.isNotEmpty
       ? previousRounds
-          .map((round) => {for (var player in players) player: round.getPoints(player, config)})
-          .reduce((pointsA, pointsB) => {for (var player in players) player: pointsA[player]! + pointsB[player]!})
+          .map((round) => {
+                for (var player in players)
+                  player: round.getPoints(player, config)
+              })
+          .reduce((pointsA, pointsB) => {
+                for (var player in players)
+                  player: pointsA[player]! + pointsB[player]!
+              })
       : {for (var player in players) player: 0};
 
   List<String> winners() {
@@ -99,17 +116,20 @@ class GameViewModel extends ChangeNotifier {
 
     activeRound!.tricks = tricks;
 
-    if (goingDown && activeRound!.handSize == 1) {
+    if (goingDown && currentHandSize == 1) {
       previousRounds.add(activeRound!);
       activeRound = null;
       return true;
     }
 
-    if (activeRound!.handSize == config.maximumHandSize(players.length)) goingDown = true;
+    if (currentHandSize == config.maximumHandSize(players.length)) {
+      goingDown = true;
+    }
 
     var newRound = Round(
       roundNumber: activeRound!.roundNumber + 1,
-      handSize: goingDown ? activeRound!.handSize - 1 : activeRound!.handSize + 1,
+      handSize:
+          goingDown ? currentHandSize - 1 : currentHandSize + 1,
       firstPlayerIndex: (activeRound!.firstPlayerIndex + 1) % players.length,
     );
 
@@ -131,9 +151,9 @@ class GameViewModel extends ChangeNotifier {
   void goDownInstead() {
     goingDown = true;
     activeRound = Round(
-        roundNumber: activeRound!.roundNumber,
-        handSize: activeRound!.handSize - 2,
-        firstPlayerIndex: activeRound!.firstPlayerIndex,
+      roundNumber: activeRound!.roundNumber,
+      handSize: currentHandSize - 2,
+      firstPlayerIndex: activeRound!.firstPlayerIndex,
     );
     notifyListeners();
   }
