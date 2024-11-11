@@ -1,15 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:rikiki_multiplatform/models/game_config.dart';
-import 'package:rikiki_multiplatform/models/round.dart';
+
+import '../models/game_config.dart';
+import '../models/round.dart';
 
 enum Steps { bet, trick }
 
 class GameViewModel extends ChangeNotifier {
   var config = GameConfig();
 
+  var gameStarted = false;
+
   late List<String> players;
+
+  static const commonPlayers = [
+    "Cécile",
+    "Édouard",
+    "Flavio",
+    "Marie-Sophie",
+    "Martin",
+    "Pavel",
+    "Sébastien",
+  ];
 
   Round? activeRound;
 
@@ -29,6 +42,7 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void start(List<String> players) {
+    gameStarted = true;
     this.players = players;
     activeRound =
         Round.first(startingPlayerIndex: Random().nextInt(players.length));

@@ -1,4 +1,4 @@
-import 'package:rikiki_multiplatform/models/game_config.dart';
+import 'game_config.dart';
 
 class Round {
   Round({
@@ -8,8 +8,7 @@ class Round {
   });
 
   Round.first({required startingPlayerIndex})
-      : this(
-            roundNumber: 1, handSize: 1, firstPlayerIndex: startingPlayerIndex);
+      : this(roundNumber: 1, handSize: 1, firstPlayerIndex: startingPlayerIndex);
 
   final int roundNumber;
   final int handSize;

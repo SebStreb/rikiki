@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
-import 'package:rikiki_multiplatform/views/components/bets_component.dart';
-import 'package:rikiki_multiplatform/views/dialogs/config_dialog.dart';
-import 'package:rikiki_multiplatform/views/dialogs/players_dialog.dart';
-import 'package:rikiki_multiplatform/views/dialogs/points_dialog.dart';
-import 'package:rikiki_multiplatform/views/components/tricks_component.dart';
+
+import '../../view_models/game_view_model.dart';
+import '../components/bets_component.dart';
+import '../dialogs/config_dialog.dart';
+import '../dialogs/players_dialog.dart';
+import '../dialogs/points_dialog.dart';
+import '../components/tricks_component.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
@@ -17,9 +19,9 @@ class GameScreen extends StatelessWidget {
           title: const Text("Rikiki Game"),
           leading: IconButton(
             onPressed: () {
-              Provider.of<GameViewModel>(context, listen: false).activeRound =
-                  null;
-              Navigator.pushReplacementNamed(context, "/result");
+              Provider.of<GameViewModel>(context, listen: false)
+                  .activeRound = null;
+              context.go("/result");
             },
             icon: const Icon(Icons.cancel),
           ),

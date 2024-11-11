@@ -4,8 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
-import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
+
+import '../../view_models/game_view_model.dart';
+import '../dialogs/error_dialog.dart';
 
 class BetsComponent extends StatefulWidget {
   const BetsComponent({super.key});
@@ -33,8 +34,10 @@ class _BetsComponentState extends State<BetsComponent> {
     return Consumer<GameViewModel>(
       builder: (context, viewModel, child) => Column(
         children: [
-          const Text("Place your bets",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text(
+            "Place your bets",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,33 +53,11 @@ class _BetsComponentState extends State<BetsComponent> {
                   onPressed: () => viewModel.goDownInstead(),
                   child: const Text("Go down instead"),
                 )
-              else TextButton(onPressed: () {}, child: const Text(""),)
-              /*
-              Row(
-                children: [
-                  !viewModel.goingDown && viewModel.activeRound!.handSize > 2
-                      ? IconButton(
-                          onPressed: () => viewModel.goDownInstead(),
-                          icon: const Icon(Icons.arrow_circle_down),
-                        )
-                      : IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.check_circle_outline),
-                        ),
-                  Text(
-                    "Round n°${viewModel.activeRound!.roundNumber}",
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Text(
-                "Hand size: ${viewModel.activeRound!.handSize} ${viewModel.goingDown ? "↓" : "↑"}",
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-
-               */
+              else
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(""),
+                )
             ],
           ),
           const SizedBox(height: 16),
@@ -94,6 +75,7 @@ class _BetsComponentState extends State<BetsComponent> {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                        autofocus: true,
                         initialValue:
                             viewModel.activeRound!.bets[player]?.toString() ??
                                 "0",

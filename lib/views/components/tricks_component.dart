@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
-import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
+
+import '../../view_models/game_view_model.dart';
+import '../dialogs/error_dialog.dart';
 
 class TricksComponent extends StatefulWidget {
   const TricksComponent({super.key});
@@ -33,8 +35,10 @@ class _TricksComponentState extends State<TricksComponent> {
     return Consumer<GameViewModel>(
       builder: (context, viewModel, child) => Column(
         children: [
-          const Text("Enter your results",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text(
+            "Enter your results",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,26 +53,6 @@ class _TricksComponentState extends State<TricksComponent> {
                 onPressed: () => viewModel.changeBets(),
                 child: const Text("Change bets"),
               )
-
-              /*
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => viewModel.changeBets(),
-                    icon: const Icon(Icons.arrow_circle_left_outlined),
-                  ),
-                  Text(
-                    "Round n°${viewModel.activeRound!.roundNumber}",
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Text(
-                "Hand size: ${viewModel.activeRound!.handSize}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-
-               */
             ],
           ),
           const SizedBox(height: 16),
@@ -90,6 +74,7 @@ class _TricksComponentState extends State<TricksComponent> {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                        autofocus: true,
                         initialValue: "0",
                         onChanged: (value) =>
                             setState(() => tricks[player] = int.parse(value)),
@@ -108,13 +93,12 @@ class _TricksComponentState extends State<TricksComponent> {
                 if (sum != viewModel.activeRound!.handSize) {
                   showDialog(
                     context: context,
-                    builder: (context) => const ErrorDialog(
-                        message:
-                            "The total number of tricks must be equal to the hand size."),
+                    builder: (context) =>
+                        const ErrorDialog(message: "The total number of tricks must be equal to the hand size."),
                   );
                 } else {
                   var done = viewModel.saveTricks(tricks);
-                  if (done) Navigator.pushReplacementNamed(context, "/result");
+                  if (done) context.go("/result");
                 }
               },
               child: const Text("Confirm results"),

@@ -7,5 +7,6 @@ class GameConfig {
 
   get numberOfCards => basicDeckSize + numberOfJokers;
 
-  int maximumHandSize(int numberOfPlayers) => ((numberOfCards - 1) / numberOfPlayers).toInt();
+  int maximumHandSize(int numberOfPlayers) =>
+      ((numberOfCards - 1) / numberOfPlayers).toInt();
 }

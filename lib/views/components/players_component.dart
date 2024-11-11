@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
+
+import '../../view_models/game_view_model.dart';
+import '../dialogs/error_dialog.dart';
 
 class PlayersComponent extends StatefulWidget {
   final List<String> players;
@@ -27,7 +29,8 @@ class _PlayersComponentState extends State<PlayersComponent> {
     if (widget.players.contains(newPlayerController.text)) {
       showDialog(
         context: context,
-        builder: (context) => const ErrorDialog(message: "There is already a player with this name."),
+        builder: (context) => const ErrorDialog(
+            message: "There is already a player with this name."),
       );
     } else if (newPlayerController.text == "") {
       showDialog(
@@ -48,6 +51,10 @@ class _PlayersComponentState extends State<PlayersComponent> {
 
   @override
   Widget build(BuildContext context) {
+    final commonPlayers = GameViewModel.commonPlayers
+        .where((element) => !widget.players.contains(element))
+        .toList();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -65,7 +72,8 @@ class _PlayersComponentState extends State<PlayersComponent> {
                     title: Text(widget.players[index]),
                   ),
                   itemCount: widget.players.length,
-                  onReorder: (oldIndex, newIndex) => widget.movePlayer(oldIndex, newIndex),
+                  onReorder: (oldIndex, newIndex) =>
+                      widget.movePlayer(oldIndex, newIndex),
                 ),
         ),
         ListTile(
@@ -76,6 +84,7 @@ class _PlayersComponentState extends State<PlayersComponent> {
           title: TextFormField(
             controller: newPlayerController,
             decoration: const InputDecoration(labelText: "New player name"),
+            autofocus: true,
             focusNode: focusNode,
             onFieldSubmitted: (value) {
               addNewPlayer();
@@ -83,6 +92,25 @@ class _PlayersComponentState extends State<PlayersComponent> {
             },
           ),
         ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 32,
+          child: Center(
+            child: ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) => const SizedBox(width: 8,),
+              itemCount: commonPlayers.length,
+              itemBuilder: (context, index) {
+                final player = commonPlayers[index];
+                return ElevatedButton(
+                  onPressed: () => widget.addPlayer(player),
+                  child: Text(player),
+                );
+              },
+            ),
+          ),
+        )
       ],
     );
   }
