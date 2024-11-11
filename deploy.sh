@@ -1,13 +1,15 @@
 #!/bin/zsh
 
-flutter build web --base-href '/RikikiWeb/'
+rm -rf ./docs
 
-cp build/web/* ../rikiki-github-page
+flutter build web --base-href '/rikiki/'
 
-cd ../rikiki-github-page
+mkdir ./docs
 
-git add .
+cp ./build/web/* ./docs
 
-git commit -m "new version!"
+git add ./docs
+
+git commit -m "new web version!"
 
 git push
