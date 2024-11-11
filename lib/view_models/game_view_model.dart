@@ -20,7 +20,6 @@ class GameViewModel extends ChangeNotifier {
     "Flavio",
     "Marie-Sophie",
     "Martin",
-    "Pavel",
     "Sébastien",
   ];
 
