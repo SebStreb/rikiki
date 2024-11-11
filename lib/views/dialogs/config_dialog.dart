@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
+
+import '../../view_models/game_view_model.dart';
 
 class ConfigDialog extends StatefulWidget {
   const ConfigDialog({super.key});
@@ -43,21 +44,29 @@ class _ConfigDialogState extends State<ConfigDialog> {
               decoration: const InputDecoration(labelText: "Number of jokers"),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              validator: (value) => int.parse(value!) <= 0 ? "Number of jokers should be positive" : null,
+              validator: (value) => int.parse(value!) <= 0
+                  ? "Number of jokers should be positive"
+                  : null,
             ),
             TextFormField(
               controller: winPointsController,
-              decoration: const InputDecoration(labelText: "Points for winning a bet"),
+              decoration:
+                  const InputDecoration(labelText: "Points for winning a bet"),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              validator: (value) => int.parse(value!) <= 0 ? "Winning point should be positive" : null,
+              validator: (value) => int.parse(value!) <= 0
+                  ? "Winning point should be positive"
+                  : null,
             ),
             TextFormField(
               controller: trickValController,
-              decoration: const InputDecoration(labelText: "Point value of a trick"),
+              decoration:
+                  const InputDecoration(labelText: "Point value of a trick"),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              validator: (value) => int.parse(value!) <= 0 ? "Trick value should be positive" : null,
+              validator: (value) => int.parse(value!) <= 0
+                  ? "Trick value should be positive"
+                  : null,
             ),
           ],
         ),
@@ -67,14 +76,17 @@ class _ConfigDialogState extends State<ConfigDialog> {
           onPressed: () {
             if (formKey.currentState!.validate()) {
               viewModel.config.numberOfJokers = int.parse(jokerController.text);
-              viewModel.config.winningPoints = int.parse(winPointsController.text);
+              viewModel.config.winningPoints =
+                  int.parse(winPointsController.text);
               viewModel.config.trickValue = int.parse(trickValController.text);
               Navigator.pop(context);
             }
           },
           child: const Text("Save"),
         ),
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel")),
       ],
     );
   }

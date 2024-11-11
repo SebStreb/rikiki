@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rikiki_multiplatform/view_models/game_view_model.dart';
-import 'package:rikiki_multiplatform/views/components/players_component.dart';
-import 'package:rikiki_multiplatform/views/dialogs/error_dialog.dart';
+
+import '../../view_models/game_view_model.dart';
+import '../components/players_component.dart';
+import 'error_dialog.dart';
 
 class PlayersDialog extends StatefulWidget {
   const PlayersDialog({super.key});
@@ -16,7 +17,8 @@ class _PlayersDialogState extends State<PlayersDialog> {
 
   @override
   void initState() {
-    setState(() => players = Provider.of<GameViewModel>(context, listen: false).players);
+    setState(() =>
+        players = Provider.of<GameViewModel>(context, listen: false).players);
     super.initState();
   }
 
@@ -45,16 +47,20 @@ class _PlayersDialogState extends State<PlayersDialog> {
             if (players.length < 2) {
               showDialog(
                 context: context,
-                builder: (context) => const ErrorDialog(message: "Enter a least two players."),
+                builder: (context) =>
+                    const ErrorDialog(message: "Enter a least two players."),
               );
             } else {
-              Provider.of<GameViewModel>(context, listen: false).changePlayers(players);
+              Provider.of<GameViewModel>(context, listen: false)
+                  .changePlayers(players);
               Navigator.pop(context);
             }
           },
           child: const Text("Save"),
         ),
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel")),
       ],
     );
   }

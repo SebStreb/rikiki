@@ -11,7 +11,10 @@ class ErrorDialog extends StatelessWidget {
       title: const Text("Error"),
       content: Text(message),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Close")),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text("Close"),
+        ),
       ],
     );
   }
