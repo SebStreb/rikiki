@@ -6,7 +6,7 @@ flutter build web --base-href '/rikiki/'
 
 mkdir ./docs
 
-cp ./build/web/* ./docs
+cp -R ./build/web/* ./docs
 
 git add ./docs
 
